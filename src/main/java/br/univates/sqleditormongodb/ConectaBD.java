@@ -5,6 +5,7 @@
  */
 package br.univates.sqleditormongodb;
 
+import com.mongodb.BasicDBObject;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,10 +15,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import com.mongodb.ConnectionString;
+import com.mongodb.DBCursor;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.bson.Document;
 
 /**
  *
@@ -27,53 +38,29 @@ public class ConectaBD {
 
     ResultSet resultadoQ = null;
 
-    public long consulta() {
+    public void consulta() {
         long start = System.nanoTime();
 
-        try {
+        ConnectionString connString = new ConnectionString(
+                "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false"
+        );
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(connString)
+                .retryWrites(true)
+                .build();
+        MongoClient mongoClient = MongoClients.create(settings);
+        MongoDatabase database = mongoClient.getDatabase("parlamentares");
+        MongoCollection<Document> collection = database.getCollection("fornecedores");
+        //Retrieving the documents
+        FindIterable<Document> iterDoc = collection.find();
+        Iterator it = iterDoc.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
 
-            ConnectionString connString = new ConnectionString(
-                    "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false"
-            );
-            MongoClientSettings settings = MongoClientSettings.builder()
-                    .applyConnectionString(connString)
-                    .retryWrites(true)
-                    .build();
-            MongoClient mongoClient = MongoClients.create(settings);
-            MongoDatabase database = mongoClient.getDatabase("parlamentares");
-            System.out.println("Database = " + database);
+            long end = System.nanoTime();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+            long time = (end - start) / 1000000;
+
         }
-
-//        Connection con = null;
-//        String driver = "org.mariadb.jdbc.Driver";
-//        String url = "jdbc:mariadb://" + ConectaSSH.rhost + ":" + ConectaSSH.lport + "/";
-//        //String db = "classicmodels";
-//        String db = "parlamentares";
-//        String dbUser = "admindb";
-//        String dbPasswd = "2021A";
-//        try {
-//            Class.forName(driver);
-//            con = DriverManager.getConnection(url + db, dbUser, dbPasswd);
-//            try {
-//                Statement st = con.createStatement();
-//                resultadoQ = st.executeQuery(query);
-//
-//                new TableModel().resultSetToTableModel(resultadoQ, tabela);
-//                con.close();
-//
-//            } catch (SQLException s) {
-//                JOptionPane.showMessageDialog(null, "SQL statement is not executed!");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        long end = System.nanoTime();
-
-        long time = (end - start) / 1000000;
-
-        return time;
     }
 }
