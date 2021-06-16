@@ -5,28 +5,15 @@
  */
 package br.univates.sqleditormongodb;
 
-import com.mongodb.BasicDBObject;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 
 import com.mongodb.ConnectionString;
-import com.mongodb.DBCursor;
-import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
-import java.util.ArrayList;
 import java.util.Iterator;
 import org.bson.Document;
 
