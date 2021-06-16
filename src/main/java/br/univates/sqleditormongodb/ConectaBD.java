@@ -15,6 +15,9 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.bson.Document;
 
 /**
@@ -37,17 +40,29 @@ public class ConectaBD {
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
         MongoDatabase database = mongoClient.getDatabase("parlamentares");
-        MongoCollection<Document> collection = database.getCollection("fornecedores");
+        MongoCollection<Document> collection = database.runCommand( Document.parse(json) );
         //Retrieving the documents
         FindIterable<Document> iterDoc = collection.find();
-        Iterator it = iterDoc.iterator();
+        Iterator<Document> it = iterDoc.iterator();
         while (it.hasNext()) {
-            System.out.println(it.next());
+            
+            Document d = it.next();
 
+            print( d );
+            
             long end = System.nanoTime();
 
             long time = (end - start) / 1000000;
 
         }
+    }
+
+    public void print( Document d )
+    {
+        System.out.println( "{" );
+        for ( Entry<String, Object> e : d.entrySet()) {
+            System.out.println( "\t" + e.getKey() + ":" + e.getValue().toString() );    
+        }
+        System.out.println( "}" );
     }
 }
