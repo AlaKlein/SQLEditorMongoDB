@@ -27,10 +27,12 @@ import org.bson.Document;
 public class ConectaBD {
 
     ResultSet resultadoQ = null;
+    Document d = null;
 
-    public void consulta() {
+    public Document consulta(String query, String colecao) {
         long start = System.nanoTime();
 
+        //db.nomes_parlamentares.find({“estado”: “RS”},{“nome”: 1, “estado”: 1, “partido”: 1}).sort({“nome”: 1})
         ConnectionString connString = new ConnectionString(
                 "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false"
         );
@@ -40,29 +42,31 @@ public class ConectaBD {
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
         MongoDatabase database = mongoClient.getDatabase("parlamentares");
-        MongoCollection<Document> collection = database.runCommand( Document.parse(json) );
+        MongoCollection<Document> collection = database.getCollection(colecao);
+
+        //MongoCollection<Document> collection = database.runCommand( Document.parse(json) );
         //Retrieving the documents
         FindIterable<Document> iterDoc = collection.find();
         Iterator<Document> it = iterDoc.iterator();
         while (it.hasNext()) {
-            
-            Document d = it.next();
 
-            print( d );
-            
+            d = it.next();
+
+            print(d);
+
             long end = System.nanoTime();
 
             long time = (end - start) / 1000000;
 
         }
+        return d;
     }
 
-    public void print( Document d )
-    {
-        System.out.println( "{" );
-        for ( Entry<String, Object> e : d.entrySet()) {
-            System.out.println( "\t" + e.getKey() + ":" + e.getValue().toString() );    
+    public void print(Document d) {
+        System.out.println("{");
+        for (Entry<String, Object> e : d.entrySet()) {
+            System.out.println("\t" + e.getKey() + ":" + e.getValue().toString());
         }
-        System.out.println( "}" );
+        System.out.println("}");
     }
 }
