@@ -20,14 +20,12 @@ public class JFrame extends javax.swing.JFrame {
     public JFrame() {
         initComponents();
         jTextField1.setEditable(false);
+        TxtAreaResult.setEditable(false);
         this.setTitle("NOSQL Editor for MongoDB");
         jComboBox1.removeAllItems();
         jComboBox1.addItem("fornecedores");
         jComboBox1.addItem("gastos");
         jComboBox1.addItem("nomes_parlamentares");
-        
-        
-        
         
         try {
             ConectaSSH.go();
@@ -54,6 +52,7 @@ public class JFrame extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         QueryTxtArea = new javax.swing.JTextArea();
         TxtAreaResult = new javax.swing.JTextArea();
+        btnQuery1 = new javax.swing.JButton();
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -90,6 +89,13 @@ public class JFrame extends javax.swing.JFrame {
         TxtAreaResult.setColumns(20);
         TxtAreaResult.setRows(5);
 
+        btnQuery1.setText("Limpar");
+        btnQuery1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuery1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -99,7 +105,10 @@ public class JFrame extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnQuery1))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnQuery)
                                 .addGap(24, 24, 24)
@@ -127,8 +136,10 @@ public class JFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(TxtAreaResult, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnQuery1))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -146,8 +157,9 @@ public class JFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQueryActionPerformed
-        new ConectaBD().consulta(QueryTxtArea.getText(),jComboBox1.getSelectedItem().toString(), TxtAreaResult);
-        //jTextField1.setText(Long.toString(a) + "ms, " + table.getModel().getRowCount() + " lines fetched");
+        TxtAreaResult.setText("");
+        long a = new ConectaBD().consulta(QueryTxtArea.getText(),jComboBox1.getSelectedItem().toString(), TxtAreaResult);
+        jTextField1.setText(Long.toString(a) + " ms");
     }//GEN-LAST:event_btnQueryActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -157,6 +169,10 @@ public class JFrame extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void btnQuery1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuery1ActionPerformed
+        TxtAreaResult.setText("");
+    }//GEN-LAST:event_btnQuery1ActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -173,6 +189,7 @@ public class JFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea QueryTxtArea;
     private javax.swing.JTextArea TxtAreaResult;
     private javax.swing.JButton btnQuery;
+    private javax.swing.JButton btnQuery1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

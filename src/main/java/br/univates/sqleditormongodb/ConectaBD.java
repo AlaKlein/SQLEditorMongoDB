@@ -29,10 +29,12 @@ import org.bson.Document;
 public class ConectaBD {
 
     ResultSet resultadoQ = null;
-    Document d = null;
+    long start;
+    long end;
+    long time;
 
-    public Document consulta(String query, String colecao, JTextArea area) {
-        long start = System.nanoTime();
+    public long consulta(String query, String colecao, JTextArea area) {
+        start = System.nanoTime();
 
         //db.nomes_parlamentares.find({“estado”: “RS”},{“nome”: 1, “estado”: 1, “partido”: 1}).sort({“nome”: 1})
         ConnectionString connString = new ConnectionString(
@@ -53,16 +55,16 @@ public class ConectaBD {
         area.setText("");
         while (it.hasNext()) {
 
-            d = it.next();
+            Document d = it.next();
 
             print(d, area);
 
-            long end = System.nanoTime();
+             end = System.nanoTime();
 
-            long time = (end - start) / 1000000;
+             time = (end - start) / 1000000;
 
         }
-        return d;
+        return time;
     }
 
     public void print(Document d, JTextArea area) {
