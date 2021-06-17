@@ -5,6 +5,7 @@
  */
 package br.univates.sqleditormongodb;
 
+import com.mongodb.BasicDBObject;
 import java.sql.ResultSet;
 
 import com.mongodb.ConnectionString;
@@ -14,6 +15,8 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gt;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -50,18 +53,19 @@ public class ConectaBD {
 
         //MongoCollection<Document> collection = database.runCommand( Document.parse(json) );
         //Retrieving the documents
+        //FindIterable<Document> iterDoc = collection.find(gt("estado", "RS"));
+        //FindIterable<Document> iterDoc = collection.find(Document.parse(query));
+        //FindIterable<Document> iterDoc = collection.find(eq(query));
         FindIterable<Document> iterDoc = collection.find();
         Iterator<Document> it = iterDoc.iterator();
         area.setText("");
+        end = System.nanoTime();
+        time = (end - start) / 1000000;
         while (it.hasNext()) {
 
             Document d = it.next();
 
             print(d, area);
-
-             end = System.nanoTime();
-
-             time = (end - start) / 1000000;
 
         }
         return time;
@@ -69,7 +73,7 @@ public class ConectaBD {
 
     public void print(Document d, JTextArea area) {
         area.append("{\n");
-        
+
         for (Entry<String, Object> e : d.entrySet()) {
             area.append("\t" + e.getKey() + ":" + e.getValue().toString() + "\n");
         }

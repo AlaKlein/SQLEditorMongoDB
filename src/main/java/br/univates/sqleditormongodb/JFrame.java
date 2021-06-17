@@ -5,7 +5,10 @@
  */
 package br.univates.sqleditormongodb;
 
+import java.awt.ComponentOrientation;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 /**
@@ -17,21 +20,47 @@ public class JFrame extends javax.swing.JFrame {
     /**
      * Creates new form JFrame
      */
+    JTextArea textArea = new JTextArea();
     public JFrame() {
+        //Create JTextArea
+        
+
+        //Create JScrollPane that will be use as JTextArea scrollbar from JTextArea object
+        JScrollPane scrollBar = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        //Create a window using JFrame
+        //add created JScrollPane into JFrame
+        this.add(scrollBar);
+
+        //Set default close operation for JFrame
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        scrollBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+        //Set JFrame size
+        this.setSize(500, 500);
+
+        //Make JFrame get to center
+        this.setLocationRelativeTo(null);
+
+        //Make JFrame visible
+        this.setVisible(true);
+
         initComponents();
         jTextField1.setEditable(false);
         TxtAreaResult.setEditable(false);
+        //TxtAreaResult.setVisible(false);
         this.setTitle("NOSQL Editor for MongoDB");
         jComboBox1.removeAllItems();
         jComboBox1.addItem("fornecedores");
         jComboBox1.addItem("gastos");
         jComboBox1.addItem("nomes_parlamentares");
-        
+
         try {
             ConectaSSH.go();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        long a = new ConectaBD().consulta(QueryTxtArea.getText(), jComboBox1.getSelectedItem().toString(), textArea);
     }
 
     /**
@@ -118,9 +147,8 @@ public class JFrame extends javax.swing.JFrame {
                         .addGap(0, 982, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(QueryTxtArea, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TxtAreaResult, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addComponent(QueryTxtArea))
+                    .addComponent(TxtAreaResult))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -158,8 +186,8 @@ public class JFrame extends javax.swing.JFrame {
 
     private void btnQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQueryActionPerformed
         TxtAreaResult.setText("");
-        long a = new ConectaBD().consulta(QueryTxtArea.getText(),jComboBox1.getSelectedItem().toString(), TxtAreaResult);
-        jTextField1.setText(Long.toString(a) + " ms");
+        
+       // jTextField1.setText(Long.toString(a) + " ms");
     }//GEN-LAST:event_btnQueryActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
