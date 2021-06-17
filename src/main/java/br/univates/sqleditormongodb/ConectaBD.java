@@ -18,6 +18,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.JTextArea;
+
 import org.bson.Document;
 
 /**
@@ -29,7 +31,7 @@ public class ConectaBD {
     ResultSet resultadoQ = null;
     Document d = null;
 
-    public Document consulta(String query, String colecao) {
+    public Document consulta(String query, String colecao, JTextArea area) {
         long start = System.nanoTime();
 
         //db.nomes_parlamentares.find({“estado”: “RS”},{“nome”: 1, “estado”: 1, “partido”: 1}).sort({“nome”: 1})
@@ -48,11 +50,12 @@ public class ConectaBD {
         //Retrieving the documents
         FindIterable<Document> iterDoc = collection.find();
         Iterator<Document> it = iterDoc.iterator();
+        area.setText("");
         while (it.hasNext()) {
 
             d = it.next();
 
-            print(d);
+            print(d, area);
 
             long end = System.nanoTime();
 
@@ -62,11 +65,12 @@ public class ConectaBD {
         return d;
     }
 
-    public void print(Document d) {
-        System.out.println("{");
+    public void print(Document d, JTextArea area) {
+        area.append("{\n");
+        
         for (Entry<String, Object> e : d.entrySet()) {
-            System.out.println("\t" + e.getKey() + ":" + e.getValue().toString());
+            area.append("\t" + e.getKey() + ":" + e.getValue().toString() + "\n");
         }
-        System.out.println("}");
+        area.append("}\n");
     }
 }

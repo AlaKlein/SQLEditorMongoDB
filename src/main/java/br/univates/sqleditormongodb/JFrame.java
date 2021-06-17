@@ -146,7 +146,7 @@ public class JFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQueryActionPerformed
-        new ConectaBD().consulta(QueryTxtArea.getText(),jComboBox1.getSelectedItem().toString());
+        new ConectaBD().consulta(QueryTxtArea.getText(),jComboBox1.getSelectedItem().toString(), TxtAreaResult);
         //jTextField1.setText(Long.toString(a) + "ms, " + table.getModel().getRowCount() + " lines fetched");
     }//GEN-LAST:event_btnQueryActionPerformed
 
