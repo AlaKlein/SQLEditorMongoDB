@@ -51,16 +51,13 @@ public class ConectaBD {
         MongoDatabase database = mongoClient.getDatabase("parlamentares");
         MongoCollection<Document> collection = database.getCollection(colecao);
 
-        //MongoCollection<Document> collection = database.runCommand( Document.parse(json) );
         //Retrieving the documents
         //FindIterable<Document> iterDoc = collection.find(gt("estado", "RS"));
-        //FindIterable<Document> iterDoc = collection.find(Document.parse(query));
-        //FindIterable<Document> iterDoc = collection.find(eq(query));
+        
         FindIterable<Document> iterDoc = collection.find();
         Iterator<Document> it = iterDoc.iterator();
         area.setText("");
-        end = System.nanoTime();
-        time = (end - start) / 1000000;
+        
         while (it.hasNext()) {
 
             Document d = it.next();
@@ -68,6 +65,8 @@ public class ConectaBD {
             print(d, area);
 
         }
+        end = System.nanoTime();
+        time = (end - start) / 1000000;
         return time;
     }
 

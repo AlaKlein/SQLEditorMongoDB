@@ -20,35 +20,13 @@ public class JFrame extends javax.swing.JFrame {
     /**
      * Creates new form JFrame
      */
-    JTextArea textArea = new JTextArea();
+
     public JFrame() {
         //Create JTextArea
-        
-
-        //Create JScrollPane that will be use as JTextArea scrollbar from JTextArea object
-        JScrollPane scrollBar = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        //Create a window using JFrame
-        //add created JScrollPane into JFrame
-        this.add(scrollBar);
-
-        //Set default close operation for JFrame
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        scrollBar.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-
-        //Set JFrame size
-        this.setSize(500, 500);
-
-        //Make JFrame get to center
-        this.setLocationRelativeTo(null);
-
-        //Make JFrame visible
-        this.setVisible(true);
 
         initComponents();
         jTextField1.setEditable(false);
         TxtAreaResult.setEditable(false);
-        //TxtAreaResult.setVisible(false);
         this.setTitle("NOSQL Editor for MongoDB");
         jComboBox1.removeAllItems();
         jComboBox1.addItem("fornecedores");
@@ -60,7 +38,6 @@ public class JFrame extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        long a = new ConectaBD().consulta(QueryTxtArea.getText(), jComboBox1.getSelectedItem().toString(), textArea);
     }
 
     /**
@@ -186,8 +163,8 @@ public class JFrame extends javax.swing.JFrame {
 
     private void btnQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQueryActionPerformed
         TxtAreaResult.setText("");
-        
-       // jTextField1.setText(Long.toString(a) + " ms");
+        long a = new ConectaBD().consulta(QueryTxtArea.getText(), jComboBox1.getSelectedItem().toString(), TxtAreaResult);
+        jTextField1.setText(Long.toString(a) + " ms");
     }//GEN-LAST:event_btnQueryActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
